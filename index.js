@@ -12,7 +12,6 @@ const connection_string = "mongodb+srv://abhi:abhi1234@cluster0.tbqxb.mongodb.ne
 
 MongoClient.connect(connection_string, function (err, client) {
         if (err) throw err
-
         var db = client.db('todolist')
 
         db.collection('tasks')
@@ -24,9 +23,10 @@ app.post('/addtask', function(req, res) {
 
         var db = client.db('todolist')
 
-        console.log(req.body)
+        //console.log(req.body)
 
-        db.collection('tasks').insertOne(req.body)
+        collection = db.collection('tasks')
+        tasks_list = collection.insertOne(req.body)
             .then(result => {
                 console.log(result)
             })
@@ -41,10 +41,13 @@ app.get('/gettasks', function(req, res) {
 
         var db = client.db('todolist')
 
-        db.collection('tasks').find().toArray(function (err, result) {
+        task_array = db.collection('tasks').find().toArray(function (err, result) {
             if (err) throw err
             console.log(result)
+            res.send(result)
         })
+
+
     })
 })
 
