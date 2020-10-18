@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 const port = 3000
+var bodyParser = require('body-parser');
+
+app.use(bodyParser());
+
 
 
 const MongoClient = require('mongodb').MongoClient;
@@ -20,12 +24,15 @@ app.post('/addtask', function(req, res) {
 
         var db = client.db('todolist')
 
+        console.log(req.body)
+
         db.collection('tasks').insertOne(req.body)
             .then(result => {
                 console.log(result)
             })
             .catch(err => console.error(err))
     })
+    res.send("Task added!")
 })
 
 app.get('/gettasks', function(req, res) {
