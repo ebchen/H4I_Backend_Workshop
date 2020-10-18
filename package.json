@@ -1,0 +1,23 @@
+{
+  "name": "backend_onboarding",
+  "version": "1.0.0",
+  "description": "backend onboarding for h4i",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebchen/H4I_Backend_Workshop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebchen/H4I_Backend_Workshop/issues"
+  },
+  "homepage": "https://github.com/ebchen/H4I_Backend_Workshop#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2"
+  }
+}
