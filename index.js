@@ -5,8 +5,6 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser());
 
-
-
 const MongoClient = require('mongodb').MongoClient;
 const connection_string = "mongodb+srv://abhi:abhi1234@cluster0.tbqxb.mongodb.net/todolist?retryWrites=true&w=majority";
 
@@ -17,7 +15,7 @@ MongoClient.connect(connection_string, function (err, client) {
         db.collection('tasks')
 })
 
-app.post('/addtask', function(req, res) {
+app.post('/api/addtask', function(req, res) {
     MongoClient.connect(connection_string, function (err, client) {
         if (err) throw err
 
@@ -35,7 +33,7 @@ app.post('/addtask', function(req, res) {
     res.send("Task added!")
 })
 
-app.get('/gettasks', function(req, res) {
+app.get('/api/gettasks', function(req, res) {
     MongoClient.connect(connection_string, function (err, client) {
         if (err) throw err
 
@@ -46,8 +44,28 @@ app.get('/gettasks', function(req, res) {
             console.log(result)
             res.send(result)
         })
+    })
+})
 
+app.put('/api/edittask/:id', function(req, res) {
+    MongoClient.connect(connection_string, function (err, client) {
+        if (err) throw err
 
+        var db = client.db('todolist')
+        id = req.params.id
+        var filter = {_id: id}
+        var update = {
+            $set: {
+                name: req.body.name,
+                desc: req.body.desc
+            }
+        }
+
+        db.collection('tasks').updateOne(filter, update, function(err, res) {
+            if (err) throw err
+            console.log("updated task!")
+            res.send('Task updated!')
+        })
     })
 })
 
