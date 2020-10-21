@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 var bodyParser = require('body-parser');
+mongo = require('mongodb')
 
 app.use(bodyParser());
 
@@ -53,7 +54,7 @@ app.put('/api/edittask/:id', function(req, res) {
 
         var db = client.db('todolist')
         id = req.params.id
-        var filter = {_id: id}
+        var filter = {_id: mongo.ObjectId(id)}
         var update = {
             $set: {
                 name: req.body.name,
@@ -64,9 +65,24 @@ app.put('/api/edittask/:id', function(req, res) {
         db.collection('tasks').updateOne(filter, update, function(err, res) {
             if (err) throw err
             console.log("updated task!")
-            res.send('Task updated!')
         })
     })
+    res.send("Task updated!")
+})
+
+app.delete('/api/deletetask/:id', function(req, res) {
+    MongoClient.connect(connection_string, function(err, client) {
+        if (err) throw err
+
+        var db = client.db('todolist')
+        id = req.params.id
+        var filter = {_id: mongo.ObjectId(id)}
+        db.collection('tasks').deleteOne(filter, function(err, ob) {
+            if (err) throw err
+            console.log("Deleted task " + id)
+        })
+    })
+    res.send("Task deleted!")
 })
 
 app.listen(port, () => {
